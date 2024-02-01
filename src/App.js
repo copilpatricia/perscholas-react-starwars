@@ -1,23 +1,27 @@
-import logo from './logo.svg';
+import { useEffect, useState } from "react";
+import CardData from './components/Card';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
+  const [starData, setStarData] = useState([]);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch("https://swapi.dev/api/starships/");
+      const data = await res.json();
+      console.log(data)
+      //I didn't map over the results in the component!!
+      // I don't understand why... but it's working
+      setStarData(data.results)
+    };
+    fetchData()
+  }, [])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <CardData starData={starData}/>
     </div>
   );
 }
